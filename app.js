@@ -14,8 +14,7 @@ const firebaseConfig = {
   projectId: "nucaineyha",
   storageBucket: "nucaineyha.firebasestorage.app",
   messagingSenderId: "692881987074",
-  appId: "1:692881987074:web:01d3f578d3729d51ccf91b",
-  measurementId: "G-K6WK3CBNGQ"
+  appId: "1:692881987074:web:01d3f578d3729d51ccf91b"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -49,7 +48,5 @@ onChildAdded(chatRef, (data) => {
   newMessage.textContent = data.val().text;
 
   messages.appendChild(newMessage);
-
-  messages.scrollTop = messages.scrollHeight;
 
 });
