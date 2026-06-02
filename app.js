@@ -5,7 +5,8 @@ getDatabase,
 ref,
 push,
 onChildAdded
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyCFhF-Q0cSvHLe962frKH59QSKNHx-IauE",
@@ -23,11 +24,13 @@ const db = getDatabase(app);
 
 const chatRef = ref(db, "messages");
 
-const myName = localStorage.getItem("username");
+const username = localStorage.getItem("username");
 
-const myPic = localStorage.getItem("profilePic");
+const profilePic = localStorage.getItem("profilePic");
 
-document.getElementById("myProfile").src = myPic;
+document.getElementById("topProfile").src = profilePic;
+
+document.getElementById("topName").innerText = "Private Chat ❤️";
 
 window.sendMessage = function(){
 
@@ -36,41 +39,48 @@ const input = document.getElementById("messageInput");
 if(input.value.trim() === "") return;
 
 push(chatRef, {
-name: myName,
-text: input.value,
-pic: myPic
+name: username,
+photo: profilePic,
+text: input.value
 });
 
 input.value = "";
 
 };
 
-onChildAdded(chatRef, (data)=>{
+document.getElementById("messageInput").addEventListener("keypress", function(e){
 
-const messages = document.getElementById("messages");
+if(e.key === "Enter"){
+
+sendMessage();
+
+}
+
+});
+
+onChildAdded(chatRef, (data)=>{
 
 const msg = data.val();
 
-const div = document.createElement("div");
+const messages = document.getElementById("messages");
 
-div.classList.add("messageRow");
+messages.innerHTML += `
 
-if(msg.name === myName){
-div.style.justifyContent = "flex-end";
-}
+<div class="messageRow">
 
-div.innerHTML = `
-
-<img src="${msg.pic}" class="profilePic">
+<img src="${msg.photo}" class="profilePic">
 
 <div class="messageBubble">
+
 <b>${msg.name}</b><br>
+
 ${msg.text}
+
+</div>
+
 </div>
 
 `;
-
-messages.appendChild(div);
 
 messages.scrollTop = messages.scrollHeight;
 
