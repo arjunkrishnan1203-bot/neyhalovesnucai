@@ -23,30 +23,63 @@ const db = getDatabase(app);
 
 const chatRef = ref(db, "messages");
 
+let profilePic = localStorage.getItem("profilePic") || "";
+
+document.getElementById("profileUpload").addEventListener("change", function(event){
+
+const file = event.target.files[0];
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+profilePic = e.target.result;
+
+localStorage.setItem("profilePic", profilePic);
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
 window.sendMessage = function () {
 
-  const input = document.getElementById("messageInput");
+const input = document.getElementById("messageInput");
 
-  if (input.value.trim() === "") return;
+if (input.value.trim() === "") return;
 
-  push(chatRef, {
-    text: input.value
-  });
+push(chatRef, {
+text: input.value,
+pic: profilePic
+});
 
-  input.value = "";
+input.value = "";
 
 };
 
 onChildAdded(chatRef, (data) => {
 
-  const messages = document.getElementById("messages");
+const messages = document.getElementById("messages");
 
-  const newMessage = document.createElement("div");
+const messageData = data.val();
 
-  newMessage.classList.add("message");
+const messageDiv = document.createElement("div");
 
-  newMessage.textContent = data.val().text;
+messageDiv.classList.add("messageRow");
 
-  messages.appendChild(newMessage);
+messageDiv.innerHTML = `
+
+<img src="${messageData.pic}" class="profilePic">
+
+<div class="messageBubble">
+${messageData.text}
+</div>
+
+`;
+
+messages.appendChild(messageDiv);
+
+messages.scrollTop = messages.scrollHeight;
 
 });
