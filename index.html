@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Our Space ❤️</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>Welcome ❤️</h1>
+  <p>Enter Secret Code</p>
+
+  <input type="password" id="code" placeholder="Enter code">
+  <button onclick="checkCode()">Unlock</button>
+</div>
+
+<script>
+function checkCode() {
+  const code = document.getElementById("code").value;
+
+  if(code === "nkissesflowersn") {
+    window.location.href = "chat.html";
+  } else {
+    alert("Wrong code ❤️");
+  }
+}
+</script>
+
+</body>
+</html>
