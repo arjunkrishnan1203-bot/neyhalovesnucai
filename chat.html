@@ -1,55 +1,30 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+<!DOCTYPE html>
+<html>
 
-import {
-  getDatabase,
-  ref,
-  push,
-  onChildAdded
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+<head>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCFhF-Q0cSvHLe962frKH59QSKNHx-IauE",
-  authDomain: "nucaineyha.firebaseapp.com",
-  databaseURL: "https://nucaineyha-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "nucaineyha",
-  storageBucket: "nucaineyha.firebasestorage.app",
-  messagingSenderId: "692881987074",
-  appId: "1:692881987074:web:01d3f578d3729d51ccf91b",
-  measurementId: "G-K6WK3CBNGQ"
-};
+  <title>Private Chat ❤️</title>
 
-const app = initializeApp(firebaseConfig);
+  <link rel="stylesheet" href="style.css">
 
-const db = getDatabase(app);
+</head>
 
-const chatRef = ref(db, "messages");
+<body>
 
-window.sendMessage = function () {
+<div class="container">
 
-  const input = document.getElementById("messageInput");
+  <h1>Private Chat ❤️</h1>
 
-  if (input.value.trim() === "") return;
+  <div id="messages"></div>
 
-  push(chatRef, {
-    text: input.value
-  });
+  <input type="text" id="messageInput" placeholder="Type message">
 
-  input.value = "";
+  <button onclick="sendMessage()">Send</button>
 
-};
+</div>
 
-onChildAdded(chatRef, (data) => {
+<script type="module" src="app.js"></script>
 
-  const messages = document.getElementById("messages");
+</body>
 
-  const newMessage = document.createElement("div");
-
-  newMessage.classList.add("message");
-
-  newMessage.textContent = data.val().text;
-
-  messages.appendChild(newMessage);
-
-  messages.scrollTop = messages.scrollHeight;
-
-});
+</html>

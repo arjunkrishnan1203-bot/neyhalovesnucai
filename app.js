@@ -1,17 +1,16 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-getDatabase,
-ref,
-push,
-onChildAdded
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  getDatabase,
+  ref,
+  push,
+  onChildAdded
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCFhF-Q0cSvHLe962frKH59QSKNHx-IauE",
   authDomain: "nucaineyha.firebaseapp.com",
-  databaseURL: "https://nucaineyha-default-rtdb.firebaseio.com",
+  databaseURL: "https://nucaineyha-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "nucaineyha",
   storageBucket: "nucaineyha.firebasestorage.app",
   messagingSenderId: "692881987074",
@@ -25,32 +24,32 @@ const db = getDatabase(app);
 
 const chatRef = ref(db, "messages");
 
-window.sendMessage = function() {
+window.sendMessage = function () {
 
-const input = document.getElementById("messageInput");
+  const input = document.getElementById("messageInput");
 
-if(input.value.trim() === "") return;
+  if (input.value.trim() === "") return;
 
-push(chatRef, {
-text: input.value
-});
+  push(chatRef, {
+    text: input.value
+  });
 
-input.value = "";
+  input.value = "";
 
 };
 
 onChildAdded(chatRef, (data) => {
 
-const messages = document.getElementById("messages");
+  const messages = document.getElementById("messages");
 
-const newMessage = document.createElement("div");
+  const newMessage = document.createElement("div");
 
-newMessage.classList.add("message");
+  newMessage.classList.add("message");
 
-newMessage.textContent = data.val().text;
+  newMessage.textContent = data.val().text;
 
-messages.appendChild(newMessage);
+  messages.appendChild(newMessage);
 
-messages.scrollTop = messages.scrollHeight;
+  messages.scrollTop = messages.scrollHeight;
 
 });
