@@ -23,63 +23,43 @@ const db = getDatabase(app);
 
 const chatRef = ref(db, "messages");
 
-let profilePic = localStorage.getItem("profilePic") || "";
-
-document.getElementById("profileUpload").addEventListener("change", function(event){
-
-const file = event.target.files[0];
-
-const reader = new FileReader();
-
-reader.onload = function(e){
-
-profilePic = e.target.result;
-
-localStorage.setItem("profilePic", profilePic);
-
-};
-
-reader.readAsDataURL(file);
-
-});
-
 window.sendMessage = function () {
 
-const input = document.getElementById("messageInput");
+  const input = document.getElementById("messageInput");
 
-if (input.value.trim() === "") return;
+  if (input.value.trim() === "") return;
 
-push(chatRef, {
-text: input.value,
-pic: profilePic
-});
+  push(chatRef, {
+    text: input.value,
+    sender: "you"
+  });
 
-input.value = "";
+  input.value = "";
 
 };
 
 onChildAdded(chatRef, (data) => {
 
-const messages = document.getElementById("messages");
+  const messages = document.getElementById("messages");
 
-const messageData = data.val();
+  const messageData = data.val();
 
-const messageDiv = document.createElement("div");
+  const messageDiv = document.createElement("div");
 
-messageDiv.classList.add("messageRow");
+  messageDiv.classList.add("messageRow");
 
-messageDiv.innerHTML = `
+  messageDiv.innerHTML = `
+  
+  <img src="https://i.imgur.com/3ZQ3Z6v.png" class="profilePic">
 
-<img src="${messageData.pic}" class="profilePic">
+  <div class="messageBubble">
+    ${messageData.text}
+  </div>
 
-<div class="messageBubble">
-${messageData.text}
-</div>
+  `;
 
-`;
+  messages.appendChild(messageDiv);
 
-messages.appendChild(messageDiv);
-
-messages.scrollTop = messages.scrollHeight;
+  messages.scrollTop = messages.scrollHeight;
 
 });
