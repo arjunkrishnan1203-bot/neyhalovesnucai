@@ -1,20 +1,20 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-  getDatabase,
-  ref,
-  push,
-  onChildAdded
+getDatabase,
+ref,
+push,
+onChildAdded
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCFhF-Q0cSvHLe962frKH59QSKNHx-IauE",
-  authDomain: "nucaineyha.firebaseapp.com",
-  databaseURL: "https://nucaineyha-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "nucaineyha",
-  storageBucket: "nucaineyha.firebasestorage.app",
-  messagingSenderId: "692881987074",
-  appId: "1:692881987074:web:01d3f578d3729d51ccf91b"
+apiKey: "AIzaSyCFhF-Q0cSvHLe962frKH59QSKNHx-IauE",
+authDomain: "nucaineyha.firebaseapp.com",
+databaseURL: "https://nucaineyha-default-rtdb.asia-southeast1.firebasedatabase.app",
+projectId: "nucaineyha",
+storageBucket: "nucaineyha.firebasestorage.app",
+messagingSenderId: "692881987074",
+appId: "1:692881987074:web:01d3f578d3729d51ccf91b"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -23,43 +23,71 @@ const db = getDatabase(app);
 
 const chatRef = ref(db, "messages");
 
-window.sendMessage = function () {
+let myPic = localStorage.getItem("myPic") || "";
 
-  const input = document.getElementById("messageInput");
+const upload = document.getElementById("profileUpload");
 
-  if (input.value.trim() === "") return;
+upload.addEventListener("change", function(event){
 
-  push(chatRef, {
-    text: input.value,
-    sender: "you"
-  });
+const file = event.target.files[0];
 
-  input.value = "";
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+myPic = e.target.result;
+
+localStorage.setItem("myPic", myPic);
+
+document.getElementById("myProfile").src = myPic;
 
 };
 
-onChildAdded(chatRef, (data) => {
+reader.readAsDataURL(file);
 
-  const messages = document.getElementById("messages");
+});
 
-  const messageData = data.val();
+if(myPic){
+document.getElementById("myProfile").src = myPic;
+}
 
-  const messageDiv = document.createElement("div");
+window.sendMessage = function(){
 
-  messageDiv.classList.add("messageRow");
+const input = document.getElementById("messageInput");
 
-  messageDiv.innerHTML = `
-  
-  <img src="https://i.imgur.com/3ZQ3Z6v.png" class="profilePic">
+if(input.value.trim() === "") return;
 
-  <div class="messageBubble">
-    ${messageData.text}
-  </div>
+push(chatRef, {
+text: input.value,
+pic: myPic
+});
 
-  `;
+input.value = "";
 
-  messages.appendChild(messageDiv);
+};
 
-  messages.scrollTop = messages.scrollHeight;
+onChildAdded(chatRef, (data)=>{
+
+const messages = document.getElementById("messages");
+
+const msg = data.val();
+
+const div = document.createElement("div");
+
+div.classList.add("messageRow");
+
+div.innerHTML = `
+
+<img src="${msg.pic}" class="profilePic">
+
+<div class="messageBubble">
+${msg.text}
+</div>
+
+`;
+
+messages.appendChild(div);
+
+messages.scrollTop = messages.scrollHeight;
 
 });

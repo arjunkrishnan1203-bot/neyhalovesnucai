@@ -3,23 +3,38 @@
 
 <head>
 
-  <title>Private Chat ❤️</title>
+<title>❤️ Chat</title>
 
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
-<div class="container">
+<div class="chatContainer">
 
-  <h1>Private Chat ❤️</h1>
+<div class="topBar">
 
-  <div id="messages"></div>
+<img id="myProfile" class="topProfile">
 
-  <input type="text" id="messageInput" placeholder="Type message">
+<div>
+<h2>Neyha ❤️</h2>
+<p>online</p>
+</div>
 
-  <button onclick="sendMessage()">Send</button>
+</div>
+
+<div id="messages" class="messages"></div>
+
+<div class="bottomBar">
+
+<input type="file" id="profileUpload" accept="image/*" capture="user">
+
+<input type="text" id="messageInput" placeholder="Message...">
+
+<button onclick="sendMessage()">Send</button>
+
+</div>
 
 </div>
 
