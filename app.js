@@ -23,33 +23,11 @@ const db = getDatabase(app);
 
 const chatRef = ref(db, "messages");
 
-let myPic = localStorage.getItem("myPic") || "";
+const myName = localStorage.getItem("username");
 
-const upload = document.getElementById("profileUpload");
-
-upload.addEventListener("change", function(event){
-
-const file = event.target.files[0];
-
-const reader = new FileReader();
-
-reader.onload = function(e){
-
-myPic = e.target.result;
-
-localStorage.setItem("myPic", myPic);
+const myPic = localStorage.getItem("profilePic");
 
 document.getElementById("myProfile").src = myPic;
-
-};
-
-reader.readAsDataURL(file);
-
-});
-
-if(myPic){
-document.getElementById("myProfile").src = myPic;
-}
 
 window.sendMessage = function(){
 
@@ -58,6 +36,7 @@ const input = document.getElementById("messageInput");
 if(input.value.trim() === "") return;
 
 push(chatRef, {
+name: myName,
 text: input.value,
 pic: myPic
 });
@@ -76,11 +55,16 @@ const div = document.createElement("div");
 
 div.classList.add("messageRow");
 
+if(msg.name === myName){
+div.style.justifyContent = "flex-end";
+}
+
 div.innerHTML = `
 
 <img src="${msg.pic}" class="profilePic">
 
 <div class="messageBubble">
+<b>${msg.name}</b><br>
 ${msg.text}
 </div>
 

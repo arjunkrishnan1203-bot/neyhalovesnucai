@@ -1,30 +1,82 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Our Space ❤️</title>
-  <link rel="stylesheet" href="style.css">
+
+<title>Love Login ❤️</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
-<div class="container">
-  <h1>Welcome ❤️</h1>
-  <p>Enter Secret Code</p>
+<div class="loginBox">
 
-  <input type="password" id="code" placeholder="Enter code">
-  <button onclick="checkCode()">Unlock</button>
+<h1>Our Space ❤️</h1>
+
+<input type="password" id="secretCode" placeholder="Secret Code">
+
+<input type="text" id="username" placeholder="Your Name">
+
+<input type="file" id="profileInput" accept="image/*" capture="user">
+
+<button onclick="login()">Enter Chat</button>
+
 </div>
 
 <script>
-function checkCode() {
-  const code = document.getElementById("code").value;
 
-  if(code === "nkissesflowersn") {
-    window.location.href = "chat.html";
-  } else {
-    alert("Wrong code ❤️");
-  }
+function login(){
+
+const code = document.getElementById("secretCode").value;
+
+const username = document.getElementById("username").value;
+
+const file = document.getElementById("profileInput").files[0];
+
+if(code !== "nkissesflowers"){
+
+alert("Wrong Secret Code ❤️");
+
+return;
+
 }
+
+if(username.trim() === ""){
+
+alert("Enter your name ❤️");
+
+return;
+
+}
+
+if(!file){
+
+alert("Choose a profile picture ❤️");
+
+return;
+
+}
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+localStorage.setItem("username", username);
+
+localStorage.setItem("profilePic", e.target.result);
+
+window.location.href = "chat.html";
+
+};
+
+reader.readAsDataURL(file);
+
+}
+
 </script>
 
 </body>
+
 </html>
