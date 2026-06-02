@@ -7,6 +7,64 @@
 
 <link rel="stylesheet" href="style.css">
 
+<style>
+
+body{
+margin:0;
+padding:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#ffd6e7;
+font-family:Arial;
+}
+
+.loginBox{
+width:320px;
+background:white;
+padding:30px;
+border-radius:25px;
+display:flex;
+flex-direction:column;
+gap:15px;
+box-shadow:0 0 20px rgba(0,0,0,0.2);
+}
+
+.loginBox h1{
+text-align:center;
+color:#ff4d88;
+}
+
+.loginBox input{
+padding:12px;
+border-radius:15px;
+border:1px solid #ccc;
+outline:none;
+font-size:15px;
+}
+
+.googleBtn{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+padding:12px;
+border-radius:15px;
+border:1px solid #ccc;
+background:white;
+cursor:pointer;
+font-size:15px;
+font-weight:bold;
+}
+
+.googleBtn img{
+width:20px;
+height:20px;
+}
+
+</style>
+
 </head>
 
 <body>
@@ -17,7 +75,13 @@
 
 <input type="password" id="secretCode" placeholder="Secret Code">
 
-<button id="googleLogin">Login With Google ❤️</button>
+<button id="googleLogin" class="googleBtn">
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg">
+
+<span>Sign in with Google</span>
+
+</button>
 
 </div>
 
@@ -48,6 +112,12 @@ const auth = getAuth(app);
 
 const provider = new GoogleAuthProvider();
 
+if(localStorage.getItem("loggedIn") === "yes"){
+
+window.location.href = "chat.html";
+
+}
+
 document.getElementById("googleLogin").addEventListener("click", async ()=>{
 
 const code = document.getElementById("secretCode").value;
@@ -69,6 +139,8 @@ const user = result.user;
 localStorage.setItem("username", user.displayName);
 
 localStorage.setItem("profilePic", user.photoURL);
+
+localStorage.setItem("loggedIn", "yes");
 
 window.location.href = "chat.html";
 
