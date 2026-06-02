@@ -24,31 +24,36 @@ const db = getDatabase(app);
 
 const chatRef = ref(db, "messages");
 
-const username = localStorage.getItem("username");
+const username =
+localStorage.getItem("username") || "Unknown";
 
-const profilePic = localStorage.getItem("profilePic");
+const profilePic =
+localStorage.getItem("profilePic") ||
+"https://i.imgur.com/9Xn4F8L.png";
 
 document.getElementById("topProfile").src = profilePic;
-
-document.getElementById("topName").innerText = "Private Chat ❤️";
 
 window.sendMessage = function(){
 
 const input = document.getElementById("messageInput");
 
-if(input.value.trim() === "") return;
+const text = input.value.trim();
 
-push(chatRef, {
+if(text === "") return;
+
+push(chatRef,{
 name: username,
 photo: profilePic,
-text: input.value
+text: text
 });
 
 input.value = "";
 
 };
 
-document.getElementById("messageInput").addEventListener("keypress", function(e){
+document
+.getElementById("messageInput")
+.addEventListener("keydown", function(e){
 
 if(e.key === "Enter"){
 
@@ -58,11 +63,12 @@ sendMessage();
 
 });
 
-onChildAdded(chatRef, (data)=>{
+onChildAdded(chatRef,(data)=>{
 
 const msg = data.val();
 
-const messages = document.getElementById("messages");
+const messages =
+document.getElementById("messages");
 
 messages.innerHTML += `
 
@@ -82,6 +88,7 @@ ${msg.text}
 
 `;
 
-messages.scrollTop = messages.scrollHeight;
+messages.scrollTop =
+messages.scrollHeight;
 
 });
