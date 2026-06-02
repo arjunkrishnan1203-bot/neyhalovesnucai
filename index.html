@@ -3,7 +3,7 @@
 
 <head>
 
-<title>Love Login ❤️</title>
+<title>Our Space ❤️</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -17,23 +17,40 @@
 
 <input type="password" id="secretCode" placeholder="Secret Code">
 
-<input type="text" id="username" placeholder="Your Name">
-
-<input type="file" id="profileInput" accept="image/*" capture="user">
-
-<button onclick="login()">Enter Chat</button>
+<button id="googleLogin">Login With Google ❤️</button>
 
 </div>
 
-<script>
+<script type="module">
 
-function login(){
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getAuth,
+GoogleAuthProvider,
+signInWithPopup
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyCFhF-Q0cSvHLe962frKH59QSKNHx-IauE",
+authDomain: "nucaineyha.firebaseapp.com",
+databaseURL: "https://nucaineyha-default-rtdb.asia-southeast1.firebasedatabase.app",
+projectId: "nucaineyha",
+storageBucket: "nucaineyha.firebasestorage.app",
+messagingSenderId: "692881987074",
+appId: "1:692881987074:web:01d3f578d3729d51ccf91b"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const provider = new GoogleAuthProvider();
+
+document.getElementById("googleLogin").addEventListener("click", async ()=>{
 
 const code = document.getElementById("secretCode").value;
-
-const username = document.getElementById("username").value;
-
-const file = document.getElementById("profileInput").files[0];
 
 if(code !== "nkissesflowers"){
 
@@ -43,37 +60,27 @@ return;
 
 }
 
-if(username.trim() === ""){
+try{
 
-alert("Enter your name ❤️");
+const result = await signInWithPopup(auth, provider);
 
-return;
+const user = result.user;
 
-}
+localStorage.setItem("username", user.displayName);
 
-if(!file){
-
-alert("Choose a profile picture ❤️");
-
-return;
-
-}
-
-const reader = new FileReader();
-
-reader.onload = function(e){
-
-localStorage.setItem("username", username);
-
-localStorage.setItem("profilePic", e.target.result);
+localStorage.setItem("profilePic", user.photoURL);
 
 window.location.href = "chat.html";
 
-};
+}
 
-reader.readAsDataURL(file);
+catch(error){
+
+alert(error.message);
 
 }
+
+});
 
 </script>
 
