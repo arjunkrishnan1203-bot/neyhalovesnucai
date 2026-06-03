@@ -112,15 +112,17 @@ const auth = getAuth(app);
 
 const provider = new GoogleAuthProvider();
 
-if(localStorage.getItem("loggedIn") === "yes"){
+window.addEventListener("beforeunload", ()=>{
 
-window.location.href = "chat.html";
+localStorage.removeItem("loginTime");
 
-}
+});
 
-document.getElementById("googleLogin").addEventListener("click", async ()=>{
+document.getElementById("googleLogin")
+.addEventListener("click", async ()=>{
 
-const code = document.getElementById("secretCode").value;
+const code =
+document.getElementById("secretCode").value;
 
 if(code !== "nkissesflowers"){
 
@@ -132,15 +134,25 @@ return;
 
 try{
 
-const result = await signInWithPopup(auth, provider);
+const result =
+await signInWithPopup(auth, provider);
 
 const user = result.user;
 
-localStorage.setItem("username", user.displayName);
+localStorage.setItem(
+"username",
+user.displayName
+);
 
-localStorage.setItem("profilePic", user.photoURL);
+localStorage.setItem(
+"profilePic",
+user.photoURL
+);
 
-localStorage.setItem("loggedIn", "yes");
+localStorage.setItem(
+"loginTime",
+new Date().getTime()
+);
 
 window.location.href = "chat.html";
 
